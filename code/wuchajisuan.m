@@ -1,0 +1,61 @@
+datas=xlsread('F:\tuandui\shiwj\shengyuqi\Test_re\Maize_2011\Maize\datas.xls');
+newdata=datas(:,1:5);
+for i=1:10
+    testmulu=strcat('F:\tuandui\shiwj\shengyuqi\Test_re\Maize_2011\set',num2str(i),'\test.csv');
+    chuzhishuju=strcat('F:\tuandui\shiwj\shengyuqi\Test_re\Maize_2011\jieguo\HD',num2str(i),'.txt');  %%%% 初值
+    [X0,Y0,H,mx,my,h,test,test2,HD]=shujuxls(testmulu,[],chuzhishuju);
+    chuzhishuju=strcat('F:\tuandui\shiwj\shengyuqi\Test_re\Maize_2011\jieguo\PD',num2str(i),'.txt');  %%%% 初值
+    [X0,Y0,H,mx,my,h,test,test2,PD]=shujuxls(testmulu,[],chuzhishuju);
+    chuzhishuju=strcat('F:\tuandui\shiwj\shengyuqi\Test_re\Maize_2011\jieguo\hdidw',num2str(i),'.txt');  %%%% 初值
+    [X0,Y0,H,mx,my,h,test,test2,hdidw]=shujuxls(testmulu,[],chuzhishuju);
+    chuzhishuju=strcat('F:\tuandui\shiwj\shengyuqi\Test_re\Maize_2011\jieguo\pdidw',num2str(i),'.txt');  %%%% 初值
+    [X0,Y0,H,mx,my,h,test,test2,pdidw]=shujuxls(testmulu,[],chuzhishuju);
+    chuzhishuju=strcat('F:\tuandui\shiwj\shengyuqi\Test_re\Maize_2011\jieguo\idw',num2str(i),'.txt');  %%%% 初值
+    [X0,Y0,H,mx,my,h,test,test2,idw]=shujuxls(testmulu,[],chuzhishuju);
+    chuzhishuju=strcat('F:\tuandui\shiwj\shengyuqi\Test_re\Maize_2011\jieguo\hdhasm',num2str(i),'.txt');  %%%% 初值
+    [X0,Y0,H,mx,my,h,test,test2,hdhasm]=shujuxls(testmulu,[],chuzhishuju);
+    chuzhishuju=strcat('F:\tuandui\shiwj\shengyuqi\Test_re\Maize_2011\jieguo\pdhasm',num2str(i),'.txt');  %%%% 初值
+    [X0,Y0,H,mx,my,h,test,test2,pdhasm]=shujuxls(testmulu,[],chuzhishuju);
+    chuzhishuju=strcat('F:\tuandui\shiwj\shengyuqi\Test_re\Maize_2011\jieguo\hasm',num2str(i),'.txt');  %%%% 初值
+    [X0,Y0,H,mx,my,h,test,test2,hasm]=shujuxls(testmulu,[],chuzhishuju);
+    [hang,lie]=size(test);
+    x2=round2(test(:,1)/h)+1;%%%%%%%%%用栅格数据，即所在图斑的值
+    y2=round2(test(:,2)/h)+1;
+    for j=1:hang
+        test(j,3)=HD(x2(j),y2(j));
+        test(j,4)=PD(x2(j),y2(j));
+        test(j,5)=HD(x2(j),y2(j))-PD(x2(j),y2(j));
+        test(j,6)=hdidw(x2(j),y2(j));
+        test(j,7)=pdidw(x2(j),y2(j));
+        test(j,8)=idw(x2(j),y2(j));
+        test(j,9)=hdhasm(x2(j),y2(j));
+        test(j,10)=pdhasm(x2(j),y2(j));
+        test(j,11)=hasm(x2(j),y2(j));
+    end
+    testmulu=xlsread(strcat('F:\tuandui\shiwj\shengyuqi\Test_re\Maize_2011\set',num2str(i),'\test.csv'));
+    for j=1:hang
+        id=find((newdata(:,1)-testmulu(j,1)).^2+(newdata(:,2)-testmulu(j,2)).^2<1);
+        newdata(id,6:14)=test(j,3:11);
+    end
+    clear test testmulu;
+end
+newdata(:,15)=newdata(:,6)-newdata(:,4);
+newdata(:,16)=newdata(:,7)-newdata(:,3);
+newdata(:,17)=newdata(:,8)-newdata(:,5);
+newdata(:,18)=newdata(:,9)-newdata(:,4);
+newdata(:,19)=newdata(:,10)-newdata(:,3);
+newdata(:,20)=newdata(:,11)-newdata(:,5);
+newdata(:,21)=newdata(:,12)-newdata(:,4);
+newdata(:,22)=newdata(:,13)-newdata(:,3);
+newdata(:,23)=newdata(:,14)-newdata(:,5);
+newdata2=newdata;
+newdata2(:,[15 18 21])=newdata2(:,[15 18 21])./newdata2(:,4);
+newdata2(:,[16 19 22])=newdata2(:,[16 19 22])./newdata2(:,3);
+newdata2(:,[17 20 23])=newdata2(:,[17 20 23])./newdata2(:,5);
+
+rmsewuchas=[sqrt(sum(newdata(:,15).^2)/length(newdata(:,12))) sqrt(sum(newdata(:,16).^2)/length(newdata(:,13))) sqrt(sum(newdata(:,17).^2)/length(newdata(:,13))) sqrt(sum(newdata(:,18).^2)/length(newdata(:,13))) sqrt(sum(newdata(:,19).^2)/length(newdata(:,13))) sqrt(sum(newdata(:,20).^2)/length(newdata(:,13))) sqrt(sum(newdata(:,21).^2)/length(newdata(:,13))) sqrt(sum(newdata(:,22).^2)/length(newdata(:,13))) sqrt(sum(newdata(:,23).^2)/length(newdata(:,13)))];
+mewuchas=[mean(newdata(:,15)) mean(newdata(:,16)) mean(newdata(:,17)) mean(newdata(:,18)) mean(newdata(:,19)) mean(newdata(:,20)) mean(newdata(:,21)) mean(newdata(:,22)) mean(newdata(:,23))];
+meabswuchas=[mean(abs(newdata(:,15))) mean(abs(newdata(:,16))) mean(abs(newdata(:,17))) mean(abs(newdata(:,18))) mean(abs(newdata(:,19))) mean(abs(newdata(:,20))) mean(abs(newdata(:,21))) mean(abs(newdata(:,22))) mean(abs(newdata(:,23)))];
+rmsewuchas2=[sqrt(sum(newdata2(:,15).^2)/length(newdata2(:,12))) sqrt(sum(newdata2(:,16).^2)/length(newdata2(:,13))) sqrt(sum(newdata2(:,17).^2)/length(newdata2(:,13))) sqrt(sum(newdata2(:,18).^2)/length(newdata2(:,13))) sqrt(sum(newdata2(:,19).^2)/length(newdata2(:,13))) sqrt(sum(newdata2(:,20).^2)/length(newdata2(:,13))) sqrt(sum(newdata2(:,21).^2)/length(newdata2(:,13))) sqrt(sum(newdata2(:,22).^2)/length(newdata2(:,13))) sqrt(sum(newdata2(:,23).^2)/length(newdata2(:,13)))];
+mewuchas2=[mean(newdata2(:,15)) mean(newdata2(:,16)) mean(newdata2(:,17)) mean(newdata2(:,18)) mean(newdata2(:,19)) mean(newdata2(:,20)) mean(newdata2(:,21)) mean(newdata2(:,22)) mean(newdata2(:,23))];
+meabswuchas2=[mean(abs(newdata2(:,15))) mean(abs(newdata2(:,16))) mean(abs(newdata2(:,17))) mean(abs(newdata2(:,18))) mean(abs(newdata2(:,19))) mean(abs(newdata2(:,20))) mean(abs(newdata2(:,21))) mean(abs(newdata2(:,22))) mean(abs(newdata2(:,23)))];
