@@ -1,2 +1,2 @@
 # Future impacts of temperature–moisture couplings on the length of growing period in global cropland
-Saibo Lia,b†*, Shaoyang Heb,c†, Tianxiang Yuea,b,d,l,*, Andrew D. Richardsone,f, Zemeng Fana,b,l, Na Zhaoa,b,l, Wei Zhoug, Werner von Blohh, Dawn Browningi, Wenjiao Shia,b, Ning Mab,c, Bin Fanj, Zhengping Dua, Chenchen Wua,b, Yimeng Jiaok, Yang Yanga,b, Ufra Nassera,b
+Saibo Li†*, Shaoyang He†, Tianxiang Yue*, Andrew D. Richardson, Zemeng Fan, Na Zhao, Wei Zhou, Werner von Bloh, Dawn Browning, Wenjiao Shi, Ning Ma, Bin Fan, Zhengping Du, Chenchen Wu, Yimeng Jiao, Yang Yang, Ufra Nasser
